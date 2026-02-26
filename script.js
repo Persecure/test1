@@ -6,8 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const date = document.getElementById('date');
     const startTime = document.getElementById('startTime');
     const endTime = document.getElementById('endTime');
-    const configId = document.getElementById('configId');
     const title = document.getElementById('title');
+    const status = document.getElementById('status');
+    const result = document.getElementById('result');
     const finalMessage = document.getElementById('finalMessage');
     const messageOutput = document.getElementById('messageOutput');
     const updateBtn = document.getElementById('updateBtn');
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="input-grid">
                     <div class="input-card">
                         <div class="input-label">Config ID</div>
-                        <input type="text" class="input-field attack-config" id="attackConfig_${index}" data-index="${index}" placeholder="Config ID" value="${configId.value}">
+                        <input type="text" class="input-field attack-config" id="attackConfig_${index}" data-index="${index}" placeholder="Config ID" value="xxxx">
                     </div>
                     <div class="input-card">
                         <div class="input-label">Hostname(s)</div>
@@ -71,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }];
         updateAttackCount();
         attachInputListeners();
-        updateTotalTrafficFields(); // Initialize total traffic fields
+        updateTotalTrafficFields();
     }
     
     // Add new attack section
@@ -80,12 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const newIndex = attackCounter;
         attackTypesContainer.insertAdjacentHTML('beforeend', getAttackSectionHTML(newIndex));
         
-        // Set default config ID from common parameter
-        const attackConfig = document.getElementById(`attackConfig_${newIndex}`);
-        if (attackConfig) {
-            attackConfig.value = configId.value;
-        }
-        
         attackSections.push({
             index: newIndex,
             element: document.getElementById(`attackSection_${newIndex}`)
@@ -93,18 +88,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         updateAttackCount();
         attachInputListeners();
-        updateTotalTrafficFields(); // Update total traffic for new section
-        updateDisplay(); // Update preview with new section
+        updateTotalTrafficFields();
+        updateDisplay();
     };
     
     // Remove attack section
     window.removeAttackSection = function(index) {
         const sectionToRemove = document.getElementById(`attackSection_${index}`);
-        if (sectionToRemove && attackSections.length > 1) { // Keep at least one section
+        if (sectionToRemove && attackSections.length > 1) {
             sectionToRemove.remove();
             attackSections = attackSections.filter(s => s.index !== index);
             updateAttackCount();
-            updateDisplay(); // Update preview after removal
+            updateDisplay();
         } else if (attackSections.length <= 1) {
             alert("At least one attack type is required!");
         }
@@ -221,30 +216,87 @@ document.addEventListener('DOMContentLoaded', function() {
         return attacks;
     }
     
+    // Title mapping - converts select values to display text
+    function getTitleDisplay(titleValue) {
+        console.log('Selected title:', titleValue); // For debugging
+        
+        const titleMap = {
+            'Adhoc Theia check': 'Adhoc Theia check',
+            'CSOC Preliminary Analysis for THEIA Akamai spike': 'CSOC Preliminary Analysis for THEIA Akamai spike',
+            '6 AM ET: No spikes observed across all THEIA platforms except for Akamai': '6 AM ET: No spikes observed across all THEIA platforms except for Akamai',
+            '11 PM ET: No spikes observed across all THEIA platforms except for Akamai': '11 PM ET: No spikes observed across all THEIA platforms except for Akamai'
+        };
+        
+        // Return mapped value or default
+        return titleMap[titleValue] || 'traffic spike';
+    }
+    
+    // Status mapping - converts select values to display text
+    function getStatusDisplay(statusValue) {
+        console.log('Selected status:', statusValue); // For debugging
+        
+        const statusMap = {
+            'ongoing': 'ongoing',
+            'subsided': 'subsided'
+        };
+        
+        // Return mapped value or default
+        return statusMap[statusValue] || 'ongoing';
+    }
+    
+    // Result mapping - converts select values to display text
+    function getResultDisplay(resultValue) {
+        console.log('Selected result:', resultValue); // For debugging
+        
+        const resultMap = {
+            'detected-mitigated': 'has been detected and mitigated',
+            'under-investigation': 'is currently under investigation',
+            'resolved': 'has been resolved',
+            'requires-analysis': 'requires further analysis'
+        };
+        
+        // Return mapped value or default
+        return resultMap[resultValue] || 'has been detected and mitigated';
+    }
+    
+    // Final Message mapping - converts select values to display text
+    function getFinalMessageDisplay(finalValue) {
+        console.log('Selected final message:', finalValue); // For debugging
+        
+        const finalMap = {
+            'standard': 'CSOC will provide detailed reports shortly.',
+            'investigating': 'CSOC is investigating the root cause.',
+            'resolved': 'Traffic has returned to normal levels.',
+            'mitigated': 'Mitigation measures have been applied.'
+        };
+        
+        // Return mapped value or default
+        return finalMap[finalValue] || 'CSOC will provide detailed reports shortly.';
+    }
+    
     // Build the message
     function buildMessage() {
         const attacks = collectAttackData();
         
         // Initialize totals
         let totalDenyAll = 0;
-        let totalAlertAll = 0;
         let totalTrafficAll = 0;
         
         // Format date and time range
         const dateTimeRange = `${date.value || '01 Jan 2024'} from <strong>${startTime.value || 'xx:xx'}</strong> to <strong>${endTime.value || 'xx:xx'}</strong>`;
         
-        // Title mapping
-        function getTitleDisplay(titleValue) {
-            const titleMap = {
-                'traffic spike': 'traffic spike',
-                'preliminary spike': 'preliminary spike',
-                'morning spike': 'morning spike',
-                'evening spike': 'evening spike'
-            };
-            return titleMap[titleValue] || 'traffic spike';
-        }
+        // Get the display text for all dropdowns using mapping functions
+        const titleDisplay = getTitleDisplay(title.value);
+        const statusDisplay = getStatusDisplay(status.value);
+        const resultDisplay = getResultDisplay(result.value);
+        const finalDisplay = getFinalMessageDisplay(finalMessage.value);
         
-        // Build display message parts
+        console.log('Title display:', titleDisplay);
+        console.log('Status display:', statusDisplay);
+        console.log('Result display:', resultDisplay);
+        console.log('Final display:', finalDisplay);
+        
+        // Build display message parts (without Attack X labels)
         let displayAttacksPart = '';
         let teamsAttacksPart = '';
         
@@ -253,27 +305,29 @@ document.addEventListener('DOMContentLoaded', function() {
             const { hostnameBullets, hostnameHtmlList } = formatHostnameList(attack.hostname);
             
             // Calculate values for individual attack
-            // Remove any commas from input values before parsing
             const denyValue = parseInt(attack.denyTraffic.value.replace(/,/g, '')) || 0;
             const alertValue = parseInt(attack.alertTraffic.value.replace(/,/g, '')) || 0;
             const totalValue = denyValue + alertValue;
             
-            // Update the total traffic field (in case it hasn't been updated)
+            // Update the total traffic field
             attack.totalTraffic.value = totalValue.toLocaleString();
             
             // Calculate percentages
             const denyPercent = totalValue > 0 ? ((denyValue / totalValue) * 100).toFixed(1) : '0';
-            const alertPercent = totalValue > 0 ? ((alertValue / totalValue) * 100).toFixed(1) : '0';
             
             // Add to overall totals
             totalDenyAll += denyValue;
-            totalAlertAll += alertValue;
             totalTrafficAll += totalValue;
             
-            // Display version for individual attack
+            // Add a separator between attacks if this isn't the first one
+            if (idx > 0) {
+                displayAttacksPart += `<br>`;
+                teamsAttacksPart += `<br>`;
+            }
+            
+            // Display version for individual attack (without Attack X label)
             displayAttacksPart += `
-<strong>Attack ${idx + 1}</strong><br>
-Config ID: <strong>${attack.attackConfig.value || configId.value || 'xxxx'}</strong><br>
+Config ID: <strong>${attack.attackConfig.value || 'xxxx'}</strong></ul><br>
 Hostname(s):<br>
 ${hostnameBullets}<br>
 Deny Traffic: <strong>${denyValue.toLocaleString()}</strong><br>
@@ -281,13 +335,11 @@ Alert Traffic: <strong>${alertValue.toLocaleString()}</strong><br>
 Total Traffic: <strong>${totalValue.toLocaleString()}</strong><br>
 Total traffic denied: <strong>${denyPercent}%</strong><br>
 Source traffic IP(s):<br>
-${ipBullets}<br><br>`;
+${ipBullets}<br>`;
 
-            // Teams version for individual attack
+            // Teams version for individual attack (without Attack X label)
             teamsAttacksPart += `
-<p><strong>Attack ${idx + 1}</strong></p>
-
-<p>Config ID: <strong>${attack.attackConfig.value || configId.value || 'xxxx'}</strong></p>
+<p>Config ID: <strong>${attack.attackConfig.value || 'xxxx'}</strong></p>
 
 <p>Hostname(s):</p>
 <ul>
@@ -305,33 +357,32 @@ ${ipHtmlList}
 </ul>`;
         });
         
-        // Calculate overall percentages based on grand total
+        // Calculate overall percentage
         const totalDenyPercent = totalTrafficAll > 0 ? ((totalDenyAll / totalTrafficAll) * 100).toFixed(1) : '0';
-        const totalAlertPercent = totalTrafficAll > 0 ? ((totalAlertAll / totalTrafficAll) * 100).toFixed(1) : '0';
         
-        // Version 1: For web display (with <br> tags) including totals
-        const displayMessage = `Hi <strong>All</strong>,<br><br>
-CSOC observed ${getTitleDisplay(title.value)} on Akamai on ${dateTimeRange}<br><br>
+        // Version 1: For web display (with <br> tags) - SIMPLIFIED COMBINED TOTALS
+        const displayMessage = `<strong>${titleDisplay}</strong>
+CSOC observed traffic spike on Akamai on ${dateTimeRange}.
 ${displayAttacksPart}
 <strong>=== COMBINED TOTALS ===</strong><br>
-Total Deny Traffic: <strong>${totalDenyAll.toLocaleString()}</strong> (${totalDenyPercent}% of grand total)<br>
-Total Alert Traffic: <strong>${totalAlertAll.toLocaleString()}</strong> (${totalAlertPercent}% of grand total)<br>
-<strong>Grand Total Traffic: ${totalTrafficAll.toLocaleString()}</strong><br><br>
-${finalMessage.value || 'CSOC will provide detailed reports shortly.'}`;
+<strong>Total Traffic: ${totalTrafficAll.toLocaleString()}</strong><br>
+<strong>Total Deny Traffic: ${totalDenyAll.toLocaleString()}</strong><br>
+<strong>Percentage Denied: ${totalDenyPercent}%</strong><br><br>
+${finalDisplay}`;
 
-        // Version 2: For Teams clipboard including totals
+        // Version 2: For Teams clipboard - SIMPLIFIED COMBINED TOTALS
         const teamsMessage = `<p>Hi <strong>All</strong>,</p>
 
-<p>CSOC observed ${getTitleDisplay(title.value)} on Akamai on ${date.value || '01 Jan 2024'} from <strong>${startTime.value || 'xx:xx'}</strong> to <strong>${endTime.value || 'xx:xx'}</strong></p>
+<p>CSOC observed ${titleDisplay} on Akamai on ${date.value || '01 Jan 2024'} from <strong>${startTime.value || 'xx:xx'}</strong> to <strong>${endTime.value || 'xx:xx'}</strong> which is currently <strong>${statusDisplay}</strong> and ${resultDisplay}.</p>
 
 ${teamsAttacksPart}
 
 <p><strong>=== COMBINED TOTALS ===</strong><br>
-Total Deny Traffic: <strong>${totalDenyAll.toLocaleString()}</strong> (${totalDenyPercent}% of grand total)<br>
-Total Alert Traffic: <strong>${totalAlertAll.toLocaleString()}</strong> (${totalAlertPercent}% of grand total)<br>
-<strong>Grand Total Traffic: ${totalTrafficAll.toLocaleString()}</strong></p>
+<strong>Total Traffic: ${totalTrafficAll.toLocaleString()}</strong><br>
+<strong>Total Deny Traffic: ${totalDenyAll.toLocaleString()}</strong><br>
+<strong>Percentage Denied: ${totalDenyPercent}%</strong></p>
 
-<p>${finalMessage.value || 'CSOC will provide detailed reports shortly.'}</p>`;
+<p>${finalDisplay}</p>`;
 
         return {
             display: displayMessage,
@@ -341,7 +392,7 @@ Total Alert Traffic: <strong>${totalAlertAll.toLocaleString()}</strong> (${total
     
     // Update the display
     function updateDisplay() {
-        updateTotalTrafficFields(); // Update all total traffic fields first
+        updateTotalTrafficFields();
         const messages = buildMessage();
         messageOutput.innerHTML = messages.display;
         showGeneratedNotification();
@@ -367,17 +418,6 @@ Total Alert Traffic: <strong>${totalAlertAll.toLocaleString()}</strong> (${total
         });
     }
     
-    // Update attack config IDs when common config ID changes
-    function updateAttackConfigIds() {
-        const attacks = collectAttackData();
-        attacks.forEach(attack => {
-            if (attack.attackConfig) {
-                attack.attackConfig.value = configId.value;
-            }
-        });
-        updateDisplay();
-    }
-    
     // Attach input listeners to all dynamic fields
     function attachInputListeners() {
         const attacks = collectAttackData();
@@ -398,12 +438,11 @@ Total Alert Traffic: <strong>${totalAlertAll.toLocaleString()}</strong> (${total
     copyBtn.addEventListener('click', copyToClipboard);
     
     // Common inputs
-    [date, startTime, endTime, configId, title, finalMessage].forEach(input => {
-        input.addEventListener('input', updateDisplay);
+    [date, startTime, endTime, title, status, result, finalMessage].forEach(input => {
+        if (input) {
+            input.addEventListener('input', updateDisplay);
+        }
     });
-    
-    // Update attack config IDs when common config ID changes
-    configId.addEventListener('input', updateAttackConfigIds);
     
     // Initialize with one attack type
     initializeAttackSections();
@@ -413,4 +452,5 @@ Total Alert Traffic: <strong>${totalAlertAll.toLocaleString()}</strong> (${total
     
     // Initial update
     updateDisplay();
+
 });
