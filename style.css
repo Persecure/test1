@@ -1,0 +1,476 @@
+/* style.css — matching the project theme with dynamic attack sections */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background-color: #111;
+    padding: 25px 20px;
+    border-right: 1px solid #222;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #222;
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #00cc00;
+}
+
+.nav-section {
+    margin-bottom: 25px;
+}
+
+.nav-section a {
+    text-decoration: none;
+    display: block;
+}
+
+.section-title {
+    color: #666;
+    font-size: 12px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.nav-item {
+    padding: 10px 12px;
+    margin-bottom: 5px;
+    color: #aaa;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: block;
+}
+
+.nav-item:hover {
+    background-color: #1a1a1a;
+    color: #00cc00;
+}
+
+.nav-item.active {
+    background-color: #1a1a1a;
+    color: #00cc00;
+    border-left: 3px solid #00cc00;
+}
+
+/* Remove default link styles */
+.nav-item span {
+    color: inherit;
+}
+
+/* Query Links in Sidebar */
+.query-links {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.query-link-item {
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    color: #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.query-link-item:hover {
+    background-color: #1a1a1a;
+    color: #00cc00;
+    padding-left: 15px;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    background-color: #0f0f0f;
+    overflow-y: auto;
+}
+
+.header {
+    margin-bottom: 30px;
+}
+
+.page-title {
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.page-subtitle {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Input Section */
+.input-section {
+    background-color: #111;
+    border-radius: 6px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 1px solid #222;
+}
+
+.section-header {
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.section-sub-header h4 {
+    font-size: 10px;
+    color: #22ef0b;
+    margin-bottom: 20px;
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.input-card {
+    background-color: #151515;
+    border-radius: 6px;
+    padding: 20px;
+    border: 1px solid #222;
+}
+
+.input-label {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #00cc00;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    background-color: #0a0a0a;
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #00cc00;
+}
+
+.input-field[readonly] {
+    background-color: #1a1a1a;
+    color: #888;
+    border-style: dashed;
+    cursor: default;
+}
+
+select.input-field {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300cc00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 1em;
+}
+
+select.input-field option {
+    background-color: #0a0a0a;
+    color: #ffffff;
+}
+
+/* Dynamic Attack Types Styles */
+.attack-types-container {
+    margin-top: 20px;
+}
+
+.attack-type-section {
+    background-color: #151515;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    position: relative;
+}
+
+.attack-type-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.attack-type-title {
+    color: #00cc00;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.remove-attack-btn {
+    background-color: #ff3333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.remove-attack-btn:hover {
+    background-color: #ff0000;
+}
+
+.add-attack-btn {
+    background-color: #00cc00;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+}
+
+.add-attack-btn:hover {
+    background-color: #00ee00;
+}
+
+.attack-counter {
+    color: #888;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+/* Query Section */
+.query-section {
+    margin-bottom: 30px;
+}
+
+.query-header {
+    margin-bottom: 20px;
+}
+
+.query-header h2 {
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.query-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Query Card */
+.query-card {
+    background-color: #111;
+    border-radius: 6px;
+    padding: 20px;
+    border: 1px solid #222;
+}
+
+.card-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #222;
+}
+
+.card-title {
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Query Item */
+.query-item {
+    margin-bottom: 20px;
+}
+
+.query-item:not(:last-child) {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #222;
+}
+
+.query-item-title {
+    font-size: 14px;
+    color: #00cc00;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.query-content {
+    background-color: #0a0a0a;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #222;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: #ddd;
+    font-size: 13px;
+    line-height: 1.6;
+    font-family: 'Courier New', monospace;
+    min-height: 250px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Message formatting inside query content */
+.query-content strong {
+    color: #00cc00;
+    font-weight: bold;
+    background-color: #1a2a1a;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.query-content em {
+    color: #00ccff;
+    font-style: italic;
+    background-color: #1a2a3a;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.query-content u {
+    text-decoration: underline;
+    text-decoration-color: #ff9900;
+    text-underline-offset: 3px;
+    background-color: #3a2a1a;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.query-content br {
+    display: block;
+    content: "";
+    margin-top: 0.5em;
+}
+
+.query-description {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.4;
+    margin-bottom: 15px;
+    padding: 8px;
+    background-color: #151515;
+    border-radius: 4px;
+}
+
+/* Query Actions */
+.query-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.copy-btn {
+    background-color: #00cc00;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.copy-btn:hover {
+    background-color: #00ee00;
+}
+
+.copy-btn.copied {
+    background-color: #00aa00;
+}
+
+/* Color highlighting for user input values */
+.highlight-hostname {
+    color: #00ff00;
+    font-weight: bold;
+}
+
+.highlight-username {
+    color: #00ccff;
+    font-weight: bold;
+}
+
+.highlight-sha256 {
+    color: #ff9900;
+    font-weight: bold;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: #111;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+    .input-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        padding: 15px;
+    }
+    
+    .main-content {
+        padding: 20px;
+    }
+}

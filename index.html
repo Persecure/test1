@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSOC · SHAPE Report</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-text">CSOC</div>
+            </div>
+            <div class="nav-section">
+                <div class="section-title">NAVIGATION</div>
+                <a href="#" class="nav-item active">
+                    <span>Preliminary Check</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">CSOC SHAPE Report</h1>
+                <div class="page-subtitle">Be useless so no one can use you</div>
+            </div>
+
+            <div class="input-section">
+                <div class="section-header">
+                    <h2>Common Parameters</h2> 
+                </div>
+                <div class="section-sub-header">
+                    <h4>Use "," for multiple values</h4>
+                </div>
+                <div class="input-grid">
+                    <div class="input-card">
+                        <div class="input-label">Date</div>
+                        <input type="text" class="input-field" id="date" placeholder="DD MMM YYYY" value="01 Jan 2024">
+                    </div>
+                    <div class="input-card">
+                        <div class="input-label">Start Time</div>
+                        <input type="text" class="input-field" id="startTime" placeholder="00:00" value="00:00">
+                    </div>
+                    <div class="input-card">
+                        <div class="input-label">End Time</div>
+                        <input type="text" class="input-field" id="endTime" placeholder="00:00" value="00:00">
+                    </div>
+                    <div class="input-card">
+                        <div class="input-label">APP/Config ID(s)</div>
+                        <input type="text" class="input-field" id="configId" placeholder="1234, 5678" value="8903">
+                    </div>
+                    <div class="input-card">
+                        <div class="input-label">Title</div>
+                        <select class="input-field" id="title">
+                            <option value="traffic spike">Ad-hoc</option>
+                            <option value="preliminary spike">Preliminary</option>
+                            <option value="morning spike">6 AM</option>
+                            <option value="evening spike">11 PM</option>
+                        </select>
+                    </div>
+                    <div class="input-card">
+                        <div class="input-label">Final Message</div>
+                        <select class="input-field" id="finalMessage">
+                            <option value="CSOC will provide detailed reports shortly.">test1</option>
+                            <option value="CSOC is investigating the root cause.">test2</option>
+                            <option value="Traffic has returned to normal levels.">test3</option>
+                            <option value="Mitigation measures have been applied.">test3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Dynamic Attack Types Container -->
+                <div class="section-header" style="margin-top: 30px;">
+                    <h2>Attack Types <span id="attackCount" class="attack-counter">(1)</span></h2> 
+                </div>
+                
+                <div id="attackTypesContainer" class="attack-types-container">
+                    <!-- Attack type sections will be dynamically added here -->
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                    <button class="add-attack-btn" id="addAttackBtn">+ ADD ATTACK TYPE</button>
+                    <button class="copy-btn" id="updateBtn">GENERATE</button>
+                </div>
+            </div>
+
+            <!-- Query Section -->
+            <div class="query-section">
+                <div class="query-header">
+                    <h2>Fusion Ops Report</h2>
+                </div>
+                <div class="query-list">
+                    <div class="query-card">
+                        <div class="card-header">
+                            <div class="card-title">PRELIMINARY CHECK</div>
+                        </div>
+                        <div class="query-item">
+                            <div class="query-item-title">MESSAGE PREVIEW</div>
+                            <div id="messageOutput" class="query-content">
+                                <!-- dynamic content injected via javascript -->
+                            </div>
+                        </div>
+                        <div class="query-actions">
+                            <button class="copy-btn" id="copyBtn">📋 COPY TO CLIPBOARD</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
