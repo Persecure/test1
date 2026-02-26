@@ -47,25 +47,40 @@
                         <input type="text" class="input-field" id="endTime" placeholder="00:00" value="00:00">
                     </div>
                     <div class="input-card">
-                        <div class="input-label">APP/Config ID(s)</div>
-                        <input type="text" class="input-field" id="configId" placeholder="1234, 5678" value="8903">
-                    </div>
-                    <div class="input-card">
                         <div class="input-label">Title</div>
                         <select class="input-field" id="title">
-                            <option value="traffic spike">Ad-hoc</option>
-                            <option value="preliminary spike">Preliminary</option>
-                            <option value="morning spike">6 AM</option>
-                            <option value="evening spike">11 PM</option>
+                            <option value="Adhoc Theia check">Ad-hoc</option>
+                            <option value="CSOC Preliminary Analysis for THEIA Akamai spike">Preliminary</option>
+                            <option value="6 AM ET: No spikes observed across all THEIA platforms except for Akamai">6 AM</option>
+                            <option value="11 PM ET: No spikes observed across all THEIA platforms except for Akamai">11 PM</option>
                         </select>
                     </div>
+                    <!-- NEW: Status Dropdown -->
+                    <div class="input-card">
+                        <div class="input-label">Status</div>
+                        <select class="input-field" id="status">
+                            <option value="ongoing">Ongoing</option>
+                            <option value="subsided">Subsided</option>
+                        </select>
+                    </div>
+                    <!-- Result Dropdown -->
+                    <div class="input-card">
+                        <div class="input-label">Result</div>
+                        <select class="input-field" id="result">
+                            <option value="detected-mitigated">Detected & Mitigated</option>
+                            <option value="under-investigation">Under Investigation</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="requires-analysis">Requires Analysis</option>
+                        </select>
+                    </div>
+                    <!-- Final Message Dropdown -->
                     <div class="input-card">
                         <div class="input-label">Final Message</div>
                         <select class="input-field" id="finalMessage">
-                            <option value="CSOC will provide detailed reports shortly.">test1</option>
-                            <option value="CSOC is investigating the root cause.">test2</option>
-                            <option value="Traffic has returned to normal levels.">test3</option>
-                            <option value="Mitigation measures have been applied.">test3</option>
+                            <option value="standard">Standard</option>
+                            <option value="investigating">Investigating</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="mitigated">Mitigated</option>
                         </select>
                     </div>
                 </div>
