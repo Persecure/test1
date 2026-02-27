@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSOC · SHAPE Report</title>
+    <title>CSOC · Akamai Report</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,22 +13,22 @@
                 <div class="logo-text">CSOC</div>
             </div>
             <div class="nav-section">
-                <div class="section-title">NAVIGATION</div>
+                <div class="section-title">Navigation</div>
                 <a href="#" class="nav-item active">
-                    <span>Preliminary Check</span>
+                    <span>Placeholder</span>
                 </a>
             </div>
         </div>
 
         <div class="main-content">
             <div class="header">
-                <h1 class="page-title">CSOC SHAPE Report</h1>
+                <h1 class="page-title">Akamai</h1>
                 <div class="page-subtitle">Be useless so no one can use you</div>
             </div>
 
             <div class="input-section">
                 <div class="section-header">
-                    <h2>Common Parameters</h2> 
+                    <h2>Input</h2> 
                 </div>
                 <div class="section-sub-header">
                     <h4>Use "," for multiple values</h4>
@@ -36,7 +36,7 @@
                 <div class="input-grid">
                     <div class="input-card">
                         <div class="input-label">Date</div>
-                        <input type="text" class="input-field" id="date" placeholder="DD MMM YYYY" value="01 Jan 2024">
+                        <input type="text" class="input-field" id="date" placeholder="DD/MM" value="xx/xx">
                     </div>
                     <div class="input-card">
                         <div class="input-label">Start Time</div>
@@ -55,7 +55,7 @@
                             <option value="11 PM ET: No spikes observed across all THEIA platforms except for Akamai">11 PM</option>
                         </select>
                     </div>
-                    <!-- NEW: Status Dropdown -->
+                    <!-- Status Dropdown -->
                     <div class="input-card">
                         <div class="input-label">Status</div>
                         <select class="input-field" id="status">
@@ -63,31 +63,19 @@
                             <option value="subsided">Subsided</option>
                         </select>
                     </div>
-                    <!-- Result Dropdown -->
-                    <div class="input-card">
-                        <div class="input-label">Result</div>
-                        <select class="input-field" id="result">
-                            <option value="detected-mitigated">Detected & Mitigated</option>
-                            <option value="under-investigation">Under Investigation</option>
-                            <option value="resolved">Resolved</option>
-                            <option value="requires-analysis">Requires Analysis</option>
-                        </select>
-                    </div>
                     <!-- Final Message Dropdown -->
                     <div class="input-card">
                         <div class="input-label">Final Message</div>
                         <select class="input-field" id="finalMessage">
-                            <option value="standard">Standard</option>
-                            <option value="investigating">Investigating</option>
-                            <option value="resolved">Resolved</option>
-                            <option value="mitigated">Mitigated</option>
+                            <option value="Preliminary">Preliminary</option>
+                            <option value="Close">Close</option>
                         </select>
                     </div>
                 </div>
 
                 <!-- Dynamic Attack Types Container -->
                 <div class="section-header" style="margin-top: 30px;">
-                    <h2>Attack Types <span id="attackCount" class="attack-counter">(1)</span></h2> 
+                    <h2>Input <span id="attackCount" class="attack-counter">(1)</span></h2> 
                 </div>
                 
                 <div id="attackTypesContainer" class="attack-types-container">
@@ -95,7 +83,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-                    <button class="add-attack-btn" id="addAttackBtn">+ ADD ATTACK TYPE</button>
+                    <button class="add-attack-btn" id="addAttackBtn">+ ADD</button>
                     <button class="copy-btn" id="updateBtn">GENERATE</button>
                 </div>
             </div>
@@ -108,16 +96,16 @@
                 <div class="query-list">
                     <div class="query-card">
                         <div class="card-header">
-                            <div class="card-title">PRELIMINARY CHECK</div>
+                            <div class="card-title">Akamai</div>
                         </div>
                         <div class="query-item">
-                            <div class="query-item-title">MESSAGE PREVIEW</div>
+                            <div class="query-item-title">Message Preview</div>
                             <div id="messageOutput" class="query-content">
                                 <!-- dynamic content injected via javascript -->
                             </div>
                         </div>
                         <div class="query-actions">
-                            <button class="copy-btn" id="copyBtn">📋 COPY TO CLIPBOARD</button>
+                            <button class="copy-btn" id="copyBtn">CLIPBOARD</button>
                         </div>
                     </div>
                 </div>
