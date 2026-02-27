@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const endTime = document.getElementById('endTime');
     const title = document.getElementById('title');
     const status = document.getElementById('status');
-    const result = document.getElementById('result');
     const finalMessage = document.getElementById('finalMessage');
     const messageOutput = document.getElementById('messageOutput');
     const updateBtn = document.getElementById('updateBtn');
@@ -26,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return `
             <div class="attack-type-section" data-attack-index="${index}" id="attackSection_${index}">
                 <div class="attack-type-header">
-                    <span class="attack-type-title">Attack ${index}</span>
+                    <span class="attack-type-title">Input ${index}</span>
                     <button class="remove-attack-btn" onclick="removeAttackSection(${index})">REMOVE</button>
                 </div>
                 <div class="input-grid">
@@ -101,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateAttackCount();
             updateDisplay();
         } else if (attackSections.length <= 1) {
-            alert("At least one attack type is required!");
+            alert("At least one attack input is required");
         }
     };
     
@@ -179,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show generation notification
     function showGeneratedNotification() {
         const originalText = updateBtn.textContent;
-        updateBtn.textContent = '✓ GENERATED!';
+        updateBtn.textContent = '✓ GENERATED';
         setTimeout(() => {
             updateBtn.textContent = 'GENERATE';
         }, 1500);
@@ -218,7 +217,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Title mapping - converts select values to display text
     function getTitleDisplay(titleValue) {
-        console.log('Selected title:', titleValue); // For debugging
         
         const titleMap = {
             'Adhoc Theia check': 'Adhoc Theia check',
@@ -228,50 +226,31 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         // Return mapped value or default
-        return titleMap[titleValue] || 'traffic spike';
+        return titleMap[titleValue];
     }
     
     // Status mapping - converts select values to display text
     function getStatusDisplay(statusValue) {
-        console.log('Selected status:', statusValue); // For debugging
         
         const statusMap = {
-            'ongoing': 'ongoing',
-            'subsided': 'subsided'
+            'ongoing': { first: 'is', second: 'ongoing', full: 'is ongoing' },
+            'subsided': { first: 'has', second: 'subsided', full: 'has subsided' }
         };
         
         // Return mapped value or default
-        return statusMap[statusValue] || 'ongoing';
-    }
-    
-    // Result mapping - converts select values to display text
-    function getResultDisplay(resultValue) {
-        console.log('Selected result:', resultValue); // For debugging
-        
-        const resultMap = {
-            'detected-mitigated': 'has been detected and mitigated',
-            'under-investigation': 'is currently under investigation',
-            'resolved': 'has been resolved',
-            'requires-analysis': 'requires further analysis'
-        };
-        
-        // Return mapped value or default
-        return resultMap[resultValue] || 'has been detected and mitigated';
+        return statusMap[statusValue] || { first: 'is', second: 'ongoing', full: 'is ongoing' };
     }
     
     // Final Message mapping - converts select values to display text
     function getFinalMessageDisplay(finalValue) {
-        console.log('Selected final message:', finalValue); // For debugging
         
         const finalMap = {
-            'standard': 'CSOC will provide detailed reports shortly.',
-            'investigating': 'CSOC is investigating the root cause.',
-            'resolved': 'Traffic has returned to normal levels.',
-            'mitigated': 'Mitigation measures have been applied.'
+            'Preliminary': 'CSOC will provide updates shortly.',
+            'Close': 'CSOC will continue to monitor and provide updates if required.'
         };
         
         // Return mapped value or default
-        return finalMap[finalValue] || 'CSOC will provide detailed reports shortly.';
+        return finalMap[finalValue];
     }
     
     // Build the message
@@ -283,17 +262,15 @@ document.addEventListener('DOMContentLoaded', function() {
         let totalTrafficAll = 0;
         
         // Format date and time range
-        const dateTimeRange = `${date.value || '01 Jan 2024'} from <strong>${startTime.value || 'xx:xx'}</strong> to <strong>${endTime.value || 'xx:xx'}</strong>`;
+        const dateTimeRange = `${date.value || 'xx/xx'} from <strong>${startTime.value || 'xx:xx'}</strong> to <strong>${endTime.value || 'xx:xx'}</strong>`;
         
         // Get the display text for all dropdowns using mapping functions
         const titleDisplay = getTitleDisplay(title.value);
         const statusDisplay = getStatusDisplay(status.value);
-        const resultDisplay = getResultDisplay(result.value);
         const finalDisplay = getFinalMessageDisplay(finalMessage.value);
         
         console.log('Title display:', titleDisplay);
         console.log('Status display:', statusDisplay);
-        console.log('Result display:', resultDisplay);
         console.log('Final display:', finalDisplay);
         
         // Build display message parts (without Attack X labels)
@@ -327,61 +304,75 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Display version for individual attack (without Attack X label)
             displayAttacksPart += `
-Config ID: <strong>${attack.attackConfig.value || 'xxxx'}</strong></ul><br>
-Hostname(s):<br>
+<strong>Config ID:</strong> ${attack.attackConfig.value || 'xxxx'}<br>
+<strong>Hostname(s):</strong><br>
 ${hostnameBullets}<br>
-Deny Traffic: <strong>${denyValue.toLocaleString()}</strong><br>
-Alert Traffic: <strong>${alertValue.toLocaleString()}</strong><br>
-Total Traffic: <strong>${totalValue.toLocaleString()}</strong><br>
-Total traffic denied: <strong>${denyPercent}%</strong><br>
-Source traffic IP(s):<br>
-${ipBullets}<br>`;
+<strong>Deny Traffic:</strong> ${denyValue.toLocaleString()}
+<strong>Alert Traffic:</strong> ${alertValue.toLocaleString()}
+<strong>Total Traffic:</strong> ${totalValue.toLocaleString()}
+<strong>Total traffic denied:</strong> ${denyPercent}%<br>
+<strong>Source traffic IP(s):</strong><br>
+${ipBullets}`;
 
             // Teams version for individual attack (without Attack X label)
             teamsAttacksPart += `
-<p>Config ID: <strong>${attack.attackConfig.value || 'xxxx'}</strong></p>
+<p><strong>Config ID:</strong> ${attack.attackConfig.value || 'xxxx'}</p>
 
-<p>Hostname(s):</p>
+<p><strong>Hostname(s):</strong></p>
 <ul>
 ${hostnameHtmlList}
 </ul>
 
-<p>Deny Traffic: <strong>${denyValue.toLocaleString()}</strong><br>
-Alert Traffic: <strong>${alertValue.toLocaleString()}</strong><br>
-Total Traffic: <strong>${totalValue.toLocaleString()}</strong><br>
-Total traffic denied: <strong>${denyPercent}%</strong></p>
+<p><strong>Deny Traffic:</strong> ${denyValue.toLocaleString()}
+<strong>Alert Traffic:</strong> ${alertValue.toLocaleString()}
+<strong>Total Traffic:</strong> ${totalValue.toLocaleString()}
+<strong>Total traffic denied:</strong> ${denyPercent}%</p>
 
-<p>Source traffic IP(s):</p>
+<p><strong>Source traffic IP(s):</strong></p>
 <ul>
 ${ipHtmlList}
 </ul>`;
         });
         
-        // Calculate overall percentage
-        const totalDenyPercent = totalTrafficAll > 0 ? ((totalDenyAll / totalTrafficAll) * 100).toFixed(1) : '0';
+        // Calculate overall percentage for multiple attacks
+        let combinedTotalsSection = '';
+        let teamsCombinedTotalsSection = '';
         
-        // Version 1: For web display (with <br> tags) - SIMPLIFIED COMBINED TOTALS
-        const displayMessage = `<strong>${titleDisplay}</strong>
-CSOC observed traffic spike on Akamai on ${dateTimeRange}.
+        // Only show combined totals if there's more than one attack
+        if (attacks.length > 1) {
+            const totalDenyPercent = totalTrafficAll > 0 ? ((totalDenyAll / totalTrafficAll) * 100).toFixed(1) : '0';
+            
+            combinedTotalsSection = `
+<strong>Consolidated Traffic</strong><br>
+<strong>Total Traffic:</strong> ${totalTrafficAll.toLocaleString()}
+<strong>Total Deny Traffic:</strong> ${totalDenyAll.toLocaleString()}
+<strong>Percentage Denied:</strong> ${totalDenyPercent}%<br>`;
+            
+            teamsCombinedTotalsSection = `
+<p><strong>Consolidated Traffic</strong>
+<br>
+<strong>Total Traffic:</strong> ${totalTrafficAll.toLocaleString()}
+<strong>Total Deny Traffic:</strong> ${totalDenyAll.toLocaleString()}
+<strong>Percentage Denied:</strong> ${totalDenyPercent}%</p>
+<br>`;
+        }
+        
+        // Version 1: For web display (with <br> tags) - REMOVED resultDisplay
+        const displayMessage = `<strong>${titleDisplay}</strong><br>
+CSOC observed traffic spike on Akamai on ${dateTimeRange} which ${statusDisplay.first ? `${statusDisplay.first} ` : ''}<strong>${statusDisplay.second}</strong>.
 ${displayAttacksPart}
-<strong>=== COMBINED TOTALS ===</strong><br>
-<strong>Total Traffic: ${totalTrafficAll.toLocaleString()}</strong><br>
-<strong>Total Deny Traffic: ${totalDenyAll.toLocaleString()}</strong><br>
-<strong>Percentage Denied: ${totalDenyPercent}%</strong><br><br>
+${combinedTotalsSection}
+Traffic ${statusDisplay.first ? `${statusDisplay.first} ` : ''}<strong>${statusDisplay.second}</strong> and no impact is expected as majority of traffic are denied.<br>
 ${finalDisplay}`;
 
-        // Version 2: For Teams clipboard - SIMPLIFIED COMBINED TOTALS
-        const teamsMessage = `<p>Hi <strong>All</strong>,</p>
+        // Version 2: For Teams clipboard - REMOVED resultDisplay
+        const teamsMessage = `<p><strong>${titleDisplay}</strong></p>
 
-<p>CSOC observed ${titleDisplay} on Akamai on ${date.value || '01 Jan 2024'} from <strong>${startTime.value || 'xx:xx'}</strong> to <strong>${endTime.value || 'xx:xx'}</strong> which is currently <strong>${statusDisplay}</strong> and ${resultDisplay}.</p>
-
+<p>CSOC observed traffic spike on Akamai on ${date.value || 'xx/xx'} from <strong>${startTime.value || 'xx:xx'}</strong> to <strong>${endTime.value || 'xx:xx'}</strong>.</p><br>
 ${teamsAttacksPart}
-
-<p><strong>=== COMBINED TOTALS ===</strong><br>
-<strong>Total Traffic: ${totalTrafficAll.toLocaleString()}</strong><br>
-<strong>Total Deny Traffic: ${totalDenyAll.toLocaleString()}</strong><br>
-<strong>Percentage Denied: ${totalDenyPercent}%</strong></p>
-
+${teamsCombinedTotalsSection}
+<p>Traffic ${statusDisplay.first ? `${statusDisplay.first} ` : ''}<strong>${statusDisplay.second}</strong> and no impact is expected as majority of traffic are denied.</p>
+<br>
 <p>${finalDisplay}</p>`;
 
         return {
@@ -409,9 +400,9 @@ ${teamsAttacksPart}
         });
         
         navigator.clipboard.write([clipboardItem]).then(() => {
-            copyBtn.textContent = '✓ COPIED!';
+            copyBtn.textContent = '✓ COPIED';
             setTimeout(() => {
-                copyBtn.textContent = '📋 COPY TO CLIPBOARD';
+                copyBtn.textContent = 'Clipboard';
             }, 2000);
         }).catch(err => {
             console.error('Copy failed:', err);
@@ -437,8 +428,8 @@ ${teamsAttacksPart}
     updateBtn.addEventListener('click', updateDisplay);
     copyBtn.addEventListener('click', copyToClipboard);
     
-    // Common inputs
-    [date, startTime, endTime, title, status, result, finalMessage].forEach(input => {
+    // Common inputs - REMOVED result from the list
+    [date, startTime, endTime, title, status, finalMessage].forEach(input => {
         if (input) {
             input.addEventListener('input', updateDisplay);
         }
