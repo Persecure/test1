@@ -1,0 +1,83 @@
+.input-card:has(.hostname) .input-field,
+.input-card:has(.src-ip) .input-field,
+.hostname,
+.src-ip {
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    padding: 12px 10px;
+    background-color: #0d0d0d;
+    border: 1px solid #00cc00;
+    box-shadow: 0 0 5px rgba(0, 204, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Increase height for multiline input capability */
+.hostname,
+.src-ip {
+    min-height: 60px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* Style for the labels of these fields */
+.input-card:has(.hostname) .input-label,
+.input-card:has(.src-ip) .input-label {
+    color: #00ff00;
+    font-weight: 600;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Add a subtle animation on focus */
+.hostname:focus,
+.src-ip:focus {
+    border-color: #00ff00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+    background-color: #121212;
+    transform: scale(1.01);
+}
+
+/* Style for placeholder text */
+.hostname::placeholder,
+.src-ip::placeholder {
+    color: #666;
+    font-style: italic;
+    font-size: 13px;
+}
+
+/* Make the cards containing these fields stand out */
+.input-card:has(.hostname),
+.input-card:has(.src-ip) {
+    background-color: #1a1a1a;
+    border: 1px solid #00cc00;
+    box-shadow: 0 2px 10px rgba(0, 204, 0, 0.1);
+    grid-column: span 2; /* Make these cards wider */
+}
+
+/* For the input grid, make these cards take more space */
+@media (min-width: 1100px) {
+    .input-card:has(.hostname),
+    .input-card:has(.src-ip) {
+        grid-column: span 2; /* Takes up 2 columns instead of 1 */
+    }
+}
+
+/* Alternative approach: make specific input fields full width in their cards */
+.hostname,
+.src-ip {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Add a visual hint that these fields support multiple entries */
+.input-card:has(.hostname)::after,
+.input-card:has(.src-ip)::after {
+    content: "⏎ Enter separates multiple items";
+    display: block;
+    font-size: 11px;
+    color: #888;
+    margin-top: 5px;
+    font-style: italic;
+    text-align: right;
+}
