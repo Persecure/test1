@@ -81,3 +81,27 @@
     font-style: italic;
     text-align: right;
 }
+---
+
+/* Simpler improvement - just make them taller and monospace */
+.hostname,
+.src-ip {
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    min-height: 80px;
+    resize: vertical;
+    background-color: #0d0d0d;
+    border: 1px solid #333;
+}
+
+.hostname:focus,
+.src-ip:focus {
+    border-color: #00cc00;
+    background-color: #111;
+}
+
+.input-card:has(.hostname) .input-label,
+.input-card:has(.src-ip) .input-label {
+    color: #00ff00;
+    font-weight: 600;
+}
